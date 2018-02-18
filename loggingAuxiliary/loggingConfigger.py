@@ -14,13 +14,19 @@ class loggingConfigger :
             "stream" : consoleStream
         }
         handlersConfig = { "console" : consoleHandlerConfig }
+        #set root logger to console
+        rootConfig = { 
+            "level" : consoleLevel,
+            "handlers" : ["console"]
+        } 
+        
         config = {
             "version" : 1,
-            "handlers" : handlersConfig
+            "handlers" : handlersConfig,
+            "root" : rootConfig
         }
         
         logging.config.dictConfig(config)
-        root = logging.root #TODO: debugging code,removing later
         logging.info("loggingConfigger.configConsoleLogging:finished.")
 
 instance = loggingConfigger()
