@@ -5,6 +5,8 @@ sys.path.append("..")
 
 import loggingAuxiliary
 import loggingAuxiliary.loggingConfigger
+import applications
+import applications.networkDiagnosticsApplication
 
 
 
