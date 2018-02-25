@@ -15,6 +15,7 @@ class program :
     #main method
     def run(self) : 
         self._initializeInfrustructures()
+        applications.networkDiagnosticsApplication.instance.collectNetworkAdaptersInformation()
     
     #initialize infrustructures
     def _initializeInfrustructures(self) : 
