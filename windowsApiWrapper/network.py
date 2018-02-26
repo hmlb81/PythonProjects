@@ -1,4 +1,5 @@
 import enum
+import ctypes
 
 class AddressFamily(enum.Enum) : 
     UNSPEC = 0 #AF_UNSPEC: unspecified
@@ -17,4 +18,11 @@ class GetAdapterAddressFlags(enum.Enum) :
     INCLUDE_ALL_INTERFACCES = 0x0100 #GAA_FLAG_INCLUDE_ALL_INTERFACES: return addresses for all NDIS interfaces.
     INCLUDE_ALL_COMPARTMENTS = 0x0200 #GAA_FLAG_INCLUDE_ALL_COMPARTMENTS: return addresses in all routing compartments.
     INCLUDE_TUNNEL_BINDINGORDER = 0x0400 #GAA_FLAG_INCLUDE_TUNNEL_BINDINGORDER: return the adapter addresses sorted in tunnel binding order.
+    
+#iphelper api wrapper
+class iphelperApiWrapper : 
+    def getAdaptersAddresses(self) :
+        return None #TODO:implementing later
+
+iphelperApiWrapperInstance = iphelperApiWrapper()
     
