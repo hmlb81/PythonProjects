@@ -1,4 +1,5 @@
 import logging
+import windowsApiWrapper.network
 
 #network diagnostics
 class networkDiagnosticsApplication : 
