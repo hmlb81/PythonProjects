@@ -5,7 +5,9 @@ import windowsApiWrapper.network
 class networkDiagnosticsApplication : 
     #collect network adapters information
     def collectNetworkAdaptersInformation(self) :
-        print(windowsApiWrapper.network.iphelperApiWrapperInstance.getAdaptersAddresses())
+        family = windowsApiWrapper.network.AddressFamily.UNSPEC
+        flags = windowsApiWrapper.network.GetAdapterAddressFlags.NONE
+        print(windowsApiWrapper.network.iphelperApiWrapperInstance.getAdaptersAddresses(family, flags))
         logging.info("networkDiagnosticsApplications.collectNetworkAdaptersInformations called.") #TODO implementing later
 
 instance = networkDiagnosticsApplication() 
