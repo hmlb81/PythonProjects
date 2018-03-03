@@ -107,6 +107,25 @@ class IPAdapterMulticastAddress(ctypes.Structure) :
         ("address", SocketAddress)
     ]
     
+class IPAdapterDnsServerAddressLayoutValue(ctypes.Structure) :
+    _fields_ = [
+        ("length", ctypes.c_ulong),
+        ("reserved", ctypes.c_ulong)
+    ]
+        
+class IPAdapterDnsServerAddressLayout(ctypes.Union) : 
+    _fields_ = [
+        ("alignment", ctypes.c_ulonglong),
+        ("value", IPAdapterDnsServerAddressLayoutValue)
+    ]
+       
+class IPAdapterDnsServerAddress(ctypes.Structure) :
+    _fields_ = [
+        ("layout", IPAdapterDnsServerAddressLayout),
+        ("next", ctypes.c_voidp), #IPAdapterDnsServerAddress* in actual, use void* temporily
+        ("address", SocketAddress)
+    ]
+    
 class IPAdapterAddressLayoutValue(ctypes.Structure) : 
     _fields_ = [
         ("length", ctypes.c_ulong),
@@ -127,18 +146,18 @@ class IPAdapterAddresses(ctypes.Structure) :
         ("adapterName", ctypes.c_char_p),
         ("firstUnicastAddress", ctypes.POINTER(IPAdapterUnicastAddress)),
         ("firstAnycastAddress", ctypes.POINTER(IPAdapterAnycastAddress)),
-        ("firstMulticastAddress", ctypes.POINTER(IPAdapterMulticastAddress))
+        ("firstMulticastAddress", ctypes.POINTER(IPAdapterMulticastAddress)),
+        ("firstDnsServerAddress", ctypes.POINTER(IPAdapterDnsServerAddress)),
+        ("dnsSuffix", ctypes.c_wchar_p),
+        ("description", ctypes.c_wchar_p),
+        ("friendlyName", ctypes.c_wchar_p),
+        ("physicalAddress", ctypes.c_byte * 8), #MAX_ADAPTER_ADDRESS_LENGTH = 8
+        ("physicalAddressLength", ctypes.c_ulong),
+        ("flags", ctypes.c_ulong),
+        ("mtu", ctypes.c_ulong),
+        ("iftype", ctypes.c_ulong)
     ]
     #typedef struct _IP_ADAPTER_ADDRESSES {
-      #PIP_ADAPTER_DNS_SERVER_ADDRESS     FirstDnsServerAddress;
-      #PWCHAR                             DnsSuffix;
-      #PWCHAR                             Description;
-      #PWCHAR                             FriendlyName;
-      #BYTE                               PhysicalAddress[MAX_ADAPTER_ADDRESS_LENGTH];
-      #DWORD                              PhysicalAddressLength;
-      #DWORD                              Flags;
-      #DWORD                              Mtu;
-      #DWORD                              IfType;
       #IF_OPER_STATUS                     OperStatus;
       #DWORD                              Ipv6IfIndex;
       #DWORD                              ZoneIndices[16];
