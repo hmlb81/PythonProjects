@@ -1,5 +1,6 @@
 import enum
 import ctypes
+from . import commonDefinitions
 
 class AddressFamily(enum.Enum) : 
     UNSPEC = 0 #AF_UNSPEC: unspecified
@@ -43,6 +44,21 @@ class IFOperStatus(enum.Enum) :
     Dormant = 5 #IfOperStatusDormant
     NotPresent = 6 #IfOperStatusNotPresent
     LowerLayerDown = 7 #IfOperStatusLowerLayerDown 
+    
+class NetIFConnectionType(enum.Enum) : 
+    Dedicated = 1 #NET_IF_CONNECTION_DEDICATED
+    Passive = 2 #NET_IF_CONNECTION_PASSIVE
+    Demand = 3 #NET_IF_CONNECTION_DEMAND
+    Maximum = 4 #NET_IF_CONNECTION_MAXIMUM    
+    
+class TunnelType(enum.Enum) :
+    NONE = 0 # TUNNEL_TYPE_NONE
+    Other = 1 #TUNNEL_TYPE_OTHER
+    Direct = 2 #TUNNEL_TYPE_DIRECT
+    IP6To4 = 11 #TUNNEL_TYPE_6TO4
+    ISATAP = 13 #TUNNEL_TYPE_ISATAP
+    Teredo = 14 #TUNNEL_TYPE_TEREDO
+    IpHttps = 15 #TUNNEL_TYPE_IPHTTPS
     
 class Sockaddr(ctypes.Structure) : 
     _fields_ = [
@@ -206,6 +222,12 @@ class IPAdapterGatewayAddress(ctypes.Structure) :
         ("address", SocketAddress)
     ]
     
+class IPAdapterDnsSuffix(ctypes.Structure) :
+    _fields_ = [
+        ("next", ctypes.c_voidp), #_IP_ADAPTER_DNS_SUFFIX* in actual, use void* temporily
+        ("suffixString", ctypes.c_wchar * 256) #MAX_DNS_SUFFIX_STRING_LENGTH=256
+    ]
+    
 class IPAdapterAddressLayoutValue(ctypes.Structure) : 
     _fields_ = [
         ("length", ctypes.c_ulong),
@@ -248,20 +270,16 @@ class IPAdapterAddresses(ctypes.Structure) :
         ("ipv6Metric", ctypes.c_ulong),
         ("luid", NetLuid), #IF_LUID
         ("dhcp4Server", SocketAddress),
-        ("compartmentId", ctypes.c_ulong) #NET_IF_COMPARTMENT_ID
+        ("compartmentId", ctypes.c_ulong), #NET_IF_COMPARTMENT_ID
+        ("networkGuid", commonDefinitions.Guid),
+        ("connectionType", ctypes.c_ulong), #NET_IF_CONNECTION_TYPE
+        ("tunnelType", ctypes.c_ulong), #TUNNEL_TYPE
+        ("dhcpv6Server", SocketAddress),
+        ("dhcpv6ClientDuid", ctypes.c_byte * 130), #MAX_DHCPV6_DUID_LENGTH=130
+        ("dhcpv6ClientDuidLength", ctypes.c_ulong),
+        ("dhcpv6Iaid", ctypes.c_ulong),
+        ("firstDnsSuffix", ctypes.POINTER(IPAdapterDnsSuffix))
     ]
-    #typedef struct _IP_ADAPTER_ADDRESSES {
-      #NET_IF_NETWORK_GUID                NetworkGuid;
-      #NET_IF_CONNECTION_TYPE             ConnectionType;
-      #TUNNEL_TYPE                        TunnelType;
-     # SOCKET_ADDRESS                     Dhcpv6Server;
-    #  BYTE                               Dhcpv6ClientDuid[MAX_DHCPV6_DUID_LENGTH];
-   #   ULONG                              Dhcpv6ClientDuidLength;
-  #    ULONG                              Dhcpv6Iaid;
- #     PIP_ADAPTER_DNS_SUFFIX             FirstDnsSuffix;
-#    } IP_ADAPTER_ADDRESSES, *PIP_ADAPTER_ADDRESSES;
-    
-    
     
 #iphelper api wrapper
 class iphelperApiWrapper : 
