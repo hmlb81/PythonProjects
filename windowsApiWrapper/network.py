@@ -35,6 +35,15 @@ class IPDadState(enum.Enum) :
     Deprecated = 3 #IpDadStateDeprecated
     Preferred = 4 #IpDadStatePreferred
     
+class IFOperStatus(enum.Enum) :
+    Up = 1 #IfOperStatusUp
+    Down = 2 #IfOperStatusDown
+    Testing = 3 #IfOperStatusTesting
+    Unknown = 4 #IfOperStatusUnknown
+    Dormant = 5 #IfOperStatusDormant
+    NotPresent = 6 #IfOperStatusNotPresent
+    LowerLayerDown = 7 #IfOperStatusLowerLayerDown 
+    
 class Sockaddr(ctypes.Structure) : 
     _fields_ = [
         ("sa_family", ctypes.c_ushort),
@@ -46,6 +55,19 @@ class SocketAddress(ctypes.Structure) :
         ("sockaddr", ctypes.POINTER(Sockaddr)),
         ("sockaddrLength", ctypes.c_int)
     ]
+    
+class NetLuidInfo(ctypes.Structure) :
+    _fields_ = [
+        ("reserved", ctypes.c_uint64, 24), #24 bit width
+        ("netLuidIndex", ctypes.c_uint64, 24), #24 bit width
+        ("iftype", ctypes.c_uint64, 16) #16 bit width
+    ]
+     
+class NetLuid(ctypes.Union) : 
+    _fields_ = [
+        ("value", ctypes.c_ulonglong),
+        ("info", NetLuidInfo)
+    ]      
     
 #IPAdapterUnicastAddress member 0
 class IPAdapterUnicastAddressLayout(ctypes.Structure) : 
@@ -126,6 +148,64 @@ class IPAdapterDnsServerAddress(ctypes.Structure) :
         ("address", SocketAddress)
     ]
     
+class IPAdapterPrefixLayoutValue(ctypes.Structure) : 
+    _fields_ = [
+        ("length", ctypes.c_ulong),
+        ("flags", ctypes.c_ulong)
+    ]
+    
+class IPAdapterPrefixLayout(ctypes.Union) : 
+    _fields_ = [
+        ("alignment", ctypes.c_ulonglong),
+        ("value", IPAdapterPrefixLayoutValue)
+    ]
+    
+class IPAdapterPrefix(ctypes.Structure) :
+    _fields_ = [
+        ("layout", IPAdapterPrefixLayout),
+        ("next", ctypes.c_voidp), #_IP_ADAPTER_PREFIX in actual, use void* temporily
+        ("address", SocketAddress),
+        ("prefixLength", ctypes.c_ulong)
+    ]
+    
+class IPAdapterWinsServerAddressLayoutValue(ctypes.Structure) :
+    _fields_ = [
+        ("length", ctypes.c_ulong),
+        ("reserved", ctypes.c_ulong)
+    ]
+    
+class IPAdapterWinsServerAddressLayout(ctypes.Union) :
+    _fields_ = [
+        ("alignment", ctypes.c_ulonglong),
+        ("value", IPAdapterWinsServerAddressLayoutValue)
+    ]
+    
+class IPAdapterWinsServerAddress(ctypes.Structure) :
+    _fields_ = [
+        ("layout", IPAdapterWinsServerAddressLayout),
+        ("next", ctypes.c_voidp), #_IP_ADAPTER_WINS_SERVER_ADDRESS* in actual, use void* temporily
+        ("address", SocketAddress)
+    ]  
+    
+class IPAdapterGatewayAddressLayoutValue(ctypes.Structure) :
+    _fields_ = [
+        ("length", ctypes.c_ulong),
+        ("reserved", ctypes.c_ulong)
+    ]
+        
+class IPAdapterGatewayAddressLayout(ctypes.Union) : 
+    _fields_ = [
+        ("alignment", ctypes.c_ulonglong),
+        ("value", IPAdapterGatewayAddressLayoutValue)
+    ]
+       
+class IPAdapterGatewayAddress(ctypes.Structure) : 
+    _fields_ = [
+        ("layout", IPAdapterGatewayAddressLayout),
+        ("next", ctypes.c_voidp), #_IP_ADAPTER_GATEWAY_ADDRESS* in actual, use void* temporily
+        ("address", SocketAddress)
+    ]
+    
 class IPAdapterAddressLayoutValue(ctypes.Structure) : 
     _fields_ = [
         ("length", ctypes.c_ulong),
@@ -155,22 +235,22 @@ class IPAdapterAddresses(ctypes.Structure) :
         ("physicalAddressLength", ctypes.c_ulong),
         ("flags", ctypes.c_ulong),
         ("mtu", ctypes.c_ulong),
-        ("iftype", ctypes.c_ulong)
+        ("iftype", ctypes.c_ulong),
+        ("operStatus", ctypes.c_ulong), #IF_OPER_STATUS
+        ("ipv6IfIndex", ctypes.c_ulong),
+        ("zoneIndices", ctypes.c_ulong * 16),
+        ("firstPrefix", ctypes.POINTER(IPAdapterPrefix)),
+        ("transmitLinkSpeed", ctypes.c_uint64),
+        ("receiveLinkSpeed", ctypes.c_uint64),
+        ("firstWinsServerAddress", ctypes.POINTER(IPAdapterWinsServerAddress)), #PIP_ADAPTER_WINS_SERVER_ADDRESS_LH
+        ("firstGatewayAddress", ctypes.POINTER(IPAdapterGatewayAddress)), #PIP_ADAPTER_GATEWAY_ADDRESS_LH
+        ("ipv4Metric", ctypes.c_ulong),
+        ("ipv6Metric", ctypes.c_ulong),
+        ("luid", NetLuid), #IF_LUID
+        ("dhcp4Server", SocketAddress),
+        ("compartmentId", ctypes.c_ulong) #NET_IF_COMPARTMENT_ID
     ]
     #typedef struct _IP_ADAPTER_ADDRESSES {
-      #IF_OPER_STATUS                     OperStatus;
-      #DWORD                              Ipv6IfIndex;
-      #DWORD                              ZoneIndices[16];
-      #PIP_ADAPTER_PREFIX                 FirstPrefix;
-      #ULONG64                            TransmitLinkSpeed;
-      #ULONG64                            ReceiveLinkSpeed;
-      #PIP_ADAPTER_WINS_SERVER_ADDRESS_LH FirstWinsServerAddress;
-      #PIP_ADAPTER_GATEWAY_ADDRESS_LH     FirstGatewayAddress;
-      #ULONG                              Ipv4Metric;
-      #ULONG                              Ipv6Metric;
-      #IF_LUID                            Luid;
-      #SOCKET_ADDRESS                     Dhcpv4Server;
-      #NET_IF_COMPARTMENT_ID              CompartmentId;
       #NET_IF_NETWORK_GUID                NetworkGuid;
       #NET_IF_CONNECTION_TYPE             ConnectionType;
       #TUNNEL_TYPE                        TunnelType;
