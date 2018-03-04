@@ -255,12 +255,14 @@ class iphelperApiWrapper :
         flagsValue = ctypes.c_ulong(flags.value)
         reservedValue = None
         addresses = IPAdapterAddresses()
+        size = ctypes.c_ulong(0)
+        ret = self._dll.GetAdaptersAddresses(familyValue, flagsValue, reservedValue, ctypes.byref(addresses), ctypes.byref(size))
+        
+        retValue = commonDefinitions.SystemErrorCodes(ret)
         return None #TODO:implementing later
 
 iphelperApiWrapperInstance = iphelperApiWrapper()
 
-#debug codes
-temp = IPAdapterAddressCommonAlignedLayout()
-print(temp)
+
 
     
