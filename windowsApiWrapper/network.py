@@ -83,18 +83,24 @@ class NetLuid(ctypes.Union) :
     _fields_ = [
         ("value", ctypes.c_ulonglong),
         ("info", NetLuidInfo)
-    ]      
+    ]     
     
-#IPAdapterUnicastAddress member 0
-class IPAdapterUnicastAddressLayout(ctypes.Structure) : 
+class IPAdapterAddressCommonLayout(ctypes.Structure) :
     _fields_ = [
         ("length", ctypes.c_ulong),
         ("flags", ctypes.c_ulong)
     ]
 
+#IPAdapterAnycastAddress member 0    
+class IPAdapterAddressAlignedLayout(ctypes.Union) : 
+    _fields_ = [
+        ("alignment", ctypes.c_ulonglong),
+        ("value", IPAdapterAddressCommonLayout)
+    ]
+    
 class IPAdapterUnicastAddress(ctypes.Structure) : 
     _fields_ = [
-        ("layout", IPAdapterUnicastAddressLayout),
+        ("layout", IPAdapterAddressCommonLayout),
         ("next", ctypes.c_voidp), #IPAdapterUnicastAddress in actual, use void* temporily
         ("address", SocketAddress),
         ("prefixOrigin", ctypes.c_int), #IP_PREFIX_ORIGIN in actual
@@ -105,119 +111,46 @@ class IPAdapterUnicastAddress(ctypes.Structure) :
         ("leaseLifetime", ctypes.c_ulong),
         ("onlinkPrefixLength", ctypes.c_ubyte)
     ]
-
-class IPAdapterAnycastAddressLayoutValue(ctypes.Structure) : 
-    _fields_ = [
-        ("length", ctypes.c_ulong),
-        ("flags", ctypes.c_ulong)
-    ]
     
-#IPAdapterAnycastAddress member 0    
-class IPAdapterAnycastAddressLayout(ctypes.Union) : 
-    _fields_ = [
-        ("alignment", ctypes.c_ulonglong),
-        ("value", IPAdapterAnycastAddressLayoutValue)
-    ]
-
 class IPAdapterAnycastAddress(ctypes.Structure) :
     _fields_ = [
-        ("layout", IPAdapterAnycastAddressLayout),
+        ("layout", IPAdapterAddressAlignedLayout),
         ("next", ctypes.c_voidp), #IPAdapterAnycastAddress* in actual, use void* temporily
         ("address", SocketAddress)
     ]
     
-class IPAdapterMulticastAddressLayoutValue(ctypes.Structure) : 
-    _fields_ = [
-        ("length", ctypes.c_ulong),
-        ("flags", ctypes.c_ulong)
-    ]
-       
-class IPAdapterMulticastAddressLayout(ctypes.Union) : 
-    _fields_ = [
-        ("alignment", ctypes.c_ulonglong),
-        ("value", IPAdapterMulticastAddressLayoutValue)
-    ]
-   
 class IPAdapterMulticastAddress(ctypes.Structure) : 
     _fields_ = [
-        ("layout", IPAdapterMulticastAddressLayout),
+        ("layout", IPAdapterAddressAlignedLayout),
         ("next", ctypes.c_voidp), #IPAdapterMulticastAddress* in actual, use void* temporily
         ("address", SocketAddress)
     ]
     
-class IPAdapterDnsServerAddressLayoutValue(ctypes.Structure) :
-    _fields_ = [
-        ("length", ctypes.c_ulong),
-        ("reserved", ctypes.c_ulong)
-    ]
-        
-class IPAdapterDnsServerAddressLayout(ctypes.Union) : 
-    _fields_ = [
-        ("alignment", ctypes.c_ulonglong),
-        ("value", IPAdapterDnsServerAddressLayoutValue)
-    ]
-       
 class IPAdapterDnsServerAddress(ctypes.Structure) :
     _fields_ = [
-        ("layout", IPAdapterDnsServerAddressLayout),
+        ("layout", IPAdapterAddressAlignedLayout),
         ("next", ctypes.c_voidp), #IPAdapterDnsServerAddress* in actual, use void* temporily
         ("address", SocketAddress)
     ]
     
-class IPAdapterPrefixLayoutValue(ctypes.Structure) : 
-    _fields_ = [
-        ("length", ctypes.c_ulong),
-        ("flags", ctypes.c_ulong)
-    ]
-    
-class IPAdapterPrefixLayout(ctypes.Union) : 
-    _fields_ = [
-        ("alignment", ctypes.c_ulonglong),
-        ("value", IPAdapterPrefixLayoutValue)
-    ]
-    
 class IPAdapterPrefix(ctypes.Structure) :
     _fields_ = [
-        ("layout", IPAdapterPrefixLayout),
+        ("layout", IPAdapterAddressAlignedLayout),
         ("next", ctypes.c_voidp), #_IP_ADAPTER_PREFIX in actual, use void* temporily
         ("address", SocketAddress),
         ("prefixLength", ctypes.c_ulong)
     ]
     
-class IPAdapterWinsServerAddressLayoutValue(ctypes.Structure) :
-    _fields_ = [
-        ("length", ctypes.c_ulong),
-        ("reserved", ctypes.c_ulong)
-    ]
-    
-class IPAdapterWinsServerAddressLayout(ctypes.Union) :
-    _fields_ = [
-        ("alignment", ctypes.c_ulonglong),
-        ("value", IPAdapterWinsServerAddressLayoutValue)
-    ]
-    
 class IPAdapterWinsServerAddress(ctypes.Structure) :
     _fields_ = [
-        ("layout", IPAdapterWinsServerAddressLayout),
+        ("layout", IPAdapterAddressAlignedLayout),
         ("next", ctypes.c_voidp), #_IP_ADAPTER_WINS_SERVER_ADDRESS* in actual, use void* temporily
         ("address", SocketAddress)
     ]  
-    
-class IPAdapterGatewayAddressLayoutValue(ctypes.Structure) :
-    _fields_ = [
-        ("length", ctypes.c_ulong),
-        ("reserved", ctypes.c_ulong)
-    ]
         
-class IPAdapterGatewayAddressLayout(ctypes.Union) : 
-    _fields_ = [
-        ("alignment", ctypes.c_ulonglong),
-        ("value", IPAdapterGatewayAddressLayoutValue)
-    ]
-       
 class IPAdapterGatewayAddress(ctypes.Structure) : 
     _fields_ = [
-        ("layout", IPAdapterGatewayAddressLayout),
+        ("layout", IPAdapterAddressAlignedLayout),
         ("next", ctypes.c_voidp), #_IP_ADAPTER_GATEWAY_ADDRESS* in actual, use void* temporily
         ("address", SocketAddress)
     ]
@@ -227,23 +160,10 @@ class IPAdapterDnsSuffix(ctypes.Structure) :
         ("next", ctypes.c_voidp), #_IP_ADAPTER_DNS_SUFFIX* in actual, use void* temporily
         ("suffixString", ctypes.c_wchar * 256) #MAX_DNS_SUFFIX_STRING_LENGTH=256
     ]
-    
-class IPAdapterAddressLayoutValue(ctypes.Structure) : 
-    _fields_ = [
-        ("length", ctypes.c_ulong),
-        ("ifindex", ctypes.c_ulong)
-    ]
-
-#IP_ADAPTER_ADDRESSES structure member 0    
-class IPAdapterAddressesLayout(ctypes.Union) : 
-    _fields_ = [
-        ("alignment", ctypes.c_ulonglong),
-        ("value", IPAdapterAddressLayoutValue)
-    ]
 
 class IPAdapterAddresses(ctypes.Structure) : 
     _fields_ = [
-        ("layout", IPAdapterAddressesLayout),
+        ("layout", IPAdapterAddressAlignedLayout),
         ("next", ctypes.c_voidp), #IPAdapterAddresses pointer in actual, used void* temporily
         ("adapterName", ctypes.c_char_p),
         ("firstUnicastAddress", ctypes.POINTER(IPAdapterUnicastAddress)),
