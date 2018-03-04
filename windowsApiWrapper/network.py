@@ -1,5 +1,6 @@
-import enum
 import ctypes
+import enum
+import itertools
 from . import commonDefinitions
 
 class AddressFamily(enum.Enum) : 
@@ -61,10 +62,19 @@ class TunnelType(enum.Enum) :
     IpHttps = 15 #TUNNEL_TYPE_IPHTTPS
     
 class Sockaddr(ctypes.Structure) : 
+    sa_data_size = 14
+    
     _fields_ = [
         ("sa_family", ctypes.c_ushort),
-        ("sa_data", ctypes.c_char * 14)
+        ("sa_data", ctypes.c_char * sa_data_size)
     ]
+    
+    def __init__(self) :
+        self.sa_family = 0
+        self.sa_data = bytes(itertools.repeat(0, self.sa_data_size))
+        
+    def __str__(self) :
+        return "Sockaddr(sa_family={0}, sa_data={1})".format(self.sa_family, self.sa_data)
 
 class SocketAddress(ctypes.Structure) : 
     _fields_ = [
@@ -215,4 +225,9 @@ class iphelperApiWrapper :
         return None #TODO:implementing later
 
 iphelperApiWrapperInstance = iphelperApiWrapper()
+
+#debug codes
+temp = Sockaddr()
+print(temp)
+
     
