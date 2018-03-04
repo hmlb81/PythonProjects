@@ -62,10 +62,6 @@ proj.file-list = [loc('snippets.py')]
 proj.file-type = 'normal'
 proj.main-file = loc('troubleShooter/program.py')
 [user attributes]
-debug.breakpoints = {loc('windowsApiWrapper/network.py'): {221L: (0,
-        None,
-        1,
-        0)}}
 debug.err-values = {loc('snippets.py'): {},
                     loc('troubleShooter/program.py'): {}}
 debug.show-args-dialog = {loc('troubleShooter/program.py'): False}
@@ -115,7 +111,7 @@ guimgr.overall-gui-state = {'windowing-policy': 'combined-window',
                                {})],
                  'primary_view_state': {'area': 'wide',
         'constraint': None,
-        'current_pages': [2,
+        'current_pages': [3,
                           0],
         'notebook_display': 'normal',
         'notebook_percent': 0.48355263157894735,
@@ -490,16 +486,17 @@ guimgr.overall-gui-state = {'windowing-policy': 'combined-window',
         'top': 0,
         'top-left-pos': None}}),
                               (loc('windowsApiWrapper/network.py'),
-                               {'attrib-starts': [('Sockaddr',
-        63),
-        ('Sockaddr.__str__',
-         75)],
-                                'first-line': 69L,
+                               {'attrib-starts': [('IPAdapterAddressCommonAl'\
+        'ignedLayout',
+        130),
+        ('IPAdapterAddressCommonAlignedLayout.__str__',
+         140)],
+                                'first-line': 125L,
                                 'folded-linenos': [],
-                                'sel-line': 76L,
-                                'sel-line-start': 3204L,
-                                'selection_end': 3293L,
-                                'selection_start': 3293L,
+                                'sel-line': 141L,
+                                'sel-line-start': 5090L,
+                                'selection_end': 5125L,
+                                'selection_start': 5125L,
                                 'zoom': 0L}),
                               (loc('troubleShooter/applications/networkDiagnosticsApplication.py'),
                                {'attrib-starts': [('networkDiagnosticsApplic'\

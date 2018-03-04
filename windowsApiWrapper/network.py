@@ -82,12 +82,24 @@ class SocketAddress(ctypes.Structure) :
         ("sockaddrLength", ctypes.c_int)
     ]
     
+    def __init__(self) :
+        self.sockaddr = None
+        self.sockaddrLength = 0
+    
 class NetLuidInfo(ctypes.Structure) :
     _fields_ = [
         ("reserved", ctypes.c_uint64, 24), #24 bit width
         ("netLuidIndex", ctypes.c_uint64, 24), #24 bit width
         ("iftype", ctypes.c_uint64, 16) #16 bit width
     ]
+    
+    def __init__(self) :
+        self.reserved = 0
+        self.netLuidIndex = 0
+        self.iftype = 0
+        
+    def __str__(self) :
+        return "NetLuidInfo(netLuidIndex={0}, iftype={1})".format(self.netLuidIndex, self.iftype)
      
 class NetLuid(ctypes.Union) : 
     _fields_ = [
@@ -95,18 +107,39 @@ class NetLuid(ctypes.Union) :
         ("info", NetLuidInfo)
     ]     
     
+    def __init__(self) :
+        self.value = 0
+        self.info = NetLuidInfo()
+        
+    def __str__(self) :
+        return self.info.__str__()
+    
 class IPAdapterAddressCommonLayout(ctypes.Structure) :
     _fields_ = [
         ("length", ctypes.c_ulong),
         ("flags", ctypes.c_ulong)
     ]
+    
+    def __int__(self) :
+        self.length = 0
+        self.flags = 0
+        
+    def __str__(self) :
+        return "IPAdapterAddressCommonLayout(length={0}, flags={1})".format(self.length, self.flags)
 
 #IPAdapterAnycastAddress member 0    
-class IPAdapterAddressAlignedLayout(ctypes.Union) : 
+class IPAdapterAddressCommonAlignedLayout(ctypes.Union) : 
     _fields_ = [
         ("alignment", ctypes.c_ulonglong),
         ("value", IPAdapterAddressCommonLayout)
     ]
+    
+    def __init__(self) :
+        self.alignment = 0
+        self.value = IPAdapterAddressCommonLayout()
+        
+    def __str__(self) :
+        return self.value.__str__()
     
 class IPAdapterUnicastAddress(ctypes.Structure) : 
     _fields_ = [
@@ -124,28 +157,28 @@ class IPAdapterUnicastAddress(ctypes.Structure) :
     
 class IPAdapterAnycastAddress(ctypes.Structure) :
     _fields_ = [
-        ("layout", IPAdapterAddressAlignedLayout),
+        ("layout", IPAdapterAddressCommonAlignedLayout),
         ("next", ctypes.c_voidp), #IPAdapterAnycastAddress* in actual, use void* temporily
         ("address", SocketAddress)
     ]
     
 class IPAdapterMulticastAddress(ctypes.Structure) : 
     _fields_ = [
-        ("layout", IPAdapterAddressAlignedLayout),
+        ("layout", IPAdapterAddressCommonAlignedLayout),
         ("next", ctypes.c_voidp), #IPAdapterMulticastAddress* in actual, use void* temporily
         ("address", SocketAddress)
     ]
     
 class IPAdapterDnsServerAddress(ctypes.Structure) :
     _fields_ = [
-        ("layout", IPAdapterAddressAlignedLayout),
+        ("layout", IPAdapterAddressCommonAlignedLayout),
         ("next", ctypes.c_voidp), #IPAdapterDnsServerAddress* in actual, use void* temporily
         ("address", SocketAddress)
     ]
     
 class IPAdapterPrefix(ctypes.Structure) :
     _fields_ = [
-        ("layout", IPAdapterAddressAlignedLayout),
+        ("layout", IPAdapterAddressCommonAlignedLayout),
         ("next", ctypes.c_voidp), #_IP_ADAPTER_PREFIX in actual, use void* temporily
         ("address", SocketAddress),
         ("prefixLength", ctypes.c_ulong)
@@ -153,14 +186,14 @@ class IPAdapterPrefix(ctypes.Structure) :
     
 class IPAdapterWinsServerAddress(ctypes.Structure) :
     _fields_ = [
-        ("layout", IPAdapterAddressAlignedLayout),
+        ("layout", IPAdapterAddressCommonAlignedLayout),
         ("next", ctypes.c_voidp), #_IP_ADAPTER_WINS_SERVER_ADDRESS* in actual, use void* temporily
         ("address", SocketAddress)
     ]  
         
 class IPAdapterGatewayAddress(ctypes.Structure) : 
     _fields_ = [
-        ("layout", IPAdapterAddressAlignedLayout),
+        ("layout", IPAdapterAddressCommonAlignedLayout),
         ("next", ctypes.c_voidp), #_IP_ADAPTER_GATEWAY_ADDRESS* in actual, use void* temporily
         ("address", SocketAddress)
     ]
@@ -173,7 +206,7 @@ class IPAdapterDnsSuffix(ctypes.Structure) :
 
 class IPAdapterAddresses(ctypes.Structure) : 
     _fields_ = [
-        ("layout", IPAdapterAddressAlignedLayout),
+        ("layout", IPAdapterAddressCommonAlignedLayout),
         ("next", ctypes.c_voidp), #IPAdapterAddresses pointer in actual, used void* temporily
         ("adapterName", ctypes.c_char_p),
         ("firstUnicastAddress", ctypes.POINTER(IPAdapterUnicastAddress)),
@@ -227,7 +260,7 @@ class iphelperApiWrapper :
 iphelperApiWrapperInstance = iphelperApiWrapper()
 
 #debug codes
-temp = Sockaddr()
+temp = IPAdapterAddressCommonAlignedLayout()
 print(temp)
 
     
