@@ -3,10 +3,9 @@
 import sys
 sys.path.append("..")
 
-import loggingAuxiliary
-import loggingAuxiliary.loggingConfigger
 import applications
 import applications.networkDiagnosticsApplication
+from loggingAuxiliary.loggingConfigger import *
 
 
 
@@ -19,7 +18,7 @@ class program :
     
     #initialize infrustructures
     def _initializeInfrustructures(self) : 
-        loggingAuxiliary.loggingConfigger.instance.configConsoleLogging()
+        loggingConfigger.getInstance().configConsoleLogging()
 
 #run program
 _instance = program()

@@ -3,6 +3,10 @@ import logging.config
 
 #Logging module configger
 class loggingConfigger : 
+    @staticmethod
+    def getInstance() :
+        return _instance
+    
     #config logging module to console
     def configConsoleLogging(self) :
         consoleHandlerClass = "logging.StreamHandler"
@@ -29,4 +33,4 @@ class loggingConfigger :
         logging.config.dictConfig(config)
         logging.info("loggingConfigger.configConsoleLogging:finished.")
 
-instance = loggingConfigger()
+_instance = loggingConfigger()
