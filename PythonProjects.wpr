@@ -94,8 +94,6 @@ edit.file-encoding = {loc('logginAuxiliary/__init__.py'): 'cp936',
         'p936',
                       loc('repositoryDesignExploit/coreDomains/sample/sampleUserIdentifier.py'): 'c'\
         'p936',
-                      loc('repositoryDesignExploit/repositoryProgram.py'): 'c'\
-        'p936',
                       loc('troubleShooter/applications/__init__.py'): 'cp936',
                       loc('troubleShooter/program.py'): 'cp936',
                       loc('windowsApiWrapper/__init__.py'): 'cp936'}
@@ -480,10 +478,10 @@ guimgr.overall-gui-state = {'windowing-policy': 'combined-window',
                                {'attrib-starts': [],
                                 'first-line': 0L,
                                 'folded-linenos': [],
-                                'sel-line': 0L,
-                                'sel-line-start': 0L,
-                                'selection_end': 0L,
-                                'selection_start': 0L,
+                                'sel-line': 6L,
+                                'sel-line-start': 145L,
+                                'selection_end': 159L,
+                                'selection_start': 159L,
                                 'zoom': 0L}),
                               (loc('programFrameworks/simpleProgramFramework.py'),
                                {'attrib-starts': [('simpleProgramBase',
@@ -497,7 +495,7 @@ guimgr.overall-gui-state = {'windowing-policy': 'combined-window',
                                 'selection_end': 517L,
                                 'selection_start': 438L,
                                 'zoom': 0L})],
-        'has-focus': False,
+        'has-focus': True,
         'locked': False},
         [loc('repositoryDesignExploit/repositoryProgram.py'),
          loc('programFrameworks/simpleProgramFramework.py')]),
@@ -762,6 +760,8 @@ proj.build-cmd = {None: ('default',
                          None)}
 proj.env-vars = {None: ('default',
                         [u''])}
-proj.pyexec = {None: ('custom',
+proj.pyexec = {None: ('default',
                       u'c:\\Python\\Python37-32\\python.exe')}
+proj.pypath = {None: ('custom',
+                      [u'$(WING:PROJECT_DIR)'])}
 search.search-history = [u'kernel32']
