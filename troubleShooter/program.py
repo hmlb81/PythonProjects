@@ -3,10 +3,9 @@
 import sys
 sys.path.append("..")
 
-import applications
-import applications.networkDiagnosticsApplication
+from applications.processAnalyzeApplication import *
 from loggingAuxiliary.loggingConfigger import *
-
+from windowsApiWrapper.kernel32Dll import *
 
 
 #main program class
@@ -14,7 +13,9 @@ class program :
     #main method
     def run(self) : 
         self._initializeInfrustructures()
-        applications.networkDiagnosticsApplication.instance.collectNetworkAdaptersInformation()
+        
+        processAnalyzeApplication.getInstance().scanProcessStrings()
+        #applications.networkDiagnosticsApplication.instance.collectNetworkAdaptersInformation()
     
     #initialize infrustructures
     def _initializeInfrustructures(self) : 
