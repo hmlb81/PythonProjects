@@ -1,5 +1,6 @@
 import ctypes
 from ..psapiDll import *
+from utilities.ctypesHelper import *
 
 class processHelper : 
     @staticmethod
@@ -33,6 +34,12 @@ class processHelper :
             if not exceededBuffer :
                 continue #if process buffer full, retry to got more processes
             
-            raise AssertionError("todo:implement")
+            #success & returning results
+            validProcessIds = ctypesHelper.getInstance().convertCtypeArrayToList(
+                processIds,
+                processCountGot,
+                lambda pid : pid #do nothing for convert, since python convert c_xx type to python interger
+                )
+            return validProcessIds 
 
 _instance = processHelper()
