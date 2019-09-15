@@ -18,8 +18,6 @@ class kernel32Dll :
     def __init__(self) :
         self._dll = ctypes.windll.kernel32
         
-        self._dll.CreateToolhelp32Snapshot.restype = ctypes.c_void_p
-        
     def createToolhelp32Snapshot(self, flags, th32ProcessID) :
         return self._dll.CreateToolhelp32Snapshot(flags, th32ProcessID)
 

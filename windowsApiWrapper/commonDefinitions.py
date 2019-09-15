@@ -1,6 +1,22 @@
 import ctypes
 import enum
 
+class systemConstants : 
+    @staticmethod
+    def getInstance() :
+        return _systemConstants
+    
+    def __init__(self) :
+        self._invalidHandleValue = ctypes.c_void_p(-1)
+        
+    def isInvalidHandleValue(self, value) :
+        if isinstance(value, ctypes.c_void_p) :
+            raise AssertionError("todo:implement")
+        else :
+            return value == self._invalidHandleValue.value #ctypes call always return python interger type
+
+_systemConstants = systemConstants()
+
 class Guid(ctypes.Structure) : 
     _fields_ = [
         ("data1", ctypes.c_ulong),

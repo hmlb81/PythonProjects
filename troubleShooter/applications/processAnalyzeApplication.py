@@ -1,7 +1,7 @@
 import ctypes
-from utilities.enumHelper import *
 from windowsApiWrapper.kernel32Dll import *
 from windowsApiWrapper.processAccess.processHelper import *
+from windowsApiWrapper.processAccess.toolhelp32SnapshotHandle import *
 
 class processAnalyzeApplication : 
     @staticmethod
@@ -16,8 +16,8 @@ class processAnalyzeApplication :
             toolhelp32CreateSnapshotFlag.TH32CS_SNAPMODULE32,
         ]
         
-        createSnapshotFlagsValue = ctypes.c_uint32(enumHelper.getInstance().combine(createSnapshotFlags))
         for processId in processIds :
+            toolhelp32SnapshotHandle.create(createSnapshotFlags, processId)
             raise AssertionError("todo:implement")
 
 _instance = processAnalyzeApplication()
