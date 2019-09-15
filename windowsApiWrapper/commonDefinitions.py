@@ -8,6 +8,11 @@ class systemConstants :
     
     def __init__(self) :
         self._invalidHandleValue = ctypes.c_void_p(-1)
+        self._maxPath = 260
+    
+    @property
+    def maxPath(self) :
+        return self._maxPath
         
     def isInvalidHandleValue(self, value) :
         if isinstance(value, ctypes.c_void_p) :
