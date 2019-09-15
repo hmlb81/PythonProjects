@@ -20,5 +20,8 @@ class kernel32Dll :
         
     def createToolhelp32Snapshot(self, flags, th32ProcessID) :
         return self._dll.CreateToolhelp32Snapshot(flags, th32ProcessID)
+    
+    def closeHandle(self, handle) :
+        return self._dll.CloseHandle(handle)
 
 _instance = kernel32Dll()

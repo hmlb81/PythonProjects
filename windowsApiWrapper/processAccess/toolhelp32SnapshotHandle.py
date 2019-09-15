@@ -14,4 +14,13 @@ class toolhelp32SnapshotHandle :
         if (isInvalidHandle) :
             return None
         
-        raise AssertionError("todo:implement")
+        return toolhelp32SnapshotHandle(handle)
+    
+    def __init__(self, handle) :
+        self._handle = handle
+        
+    def __del__(self) :
+        kernel32Dll.getInstance().closeHandle(ctypes.c_void_p(self._handle)) #closeToolhelp32Snapshot only available in win ce
+        self._handle = 0
+    
+    

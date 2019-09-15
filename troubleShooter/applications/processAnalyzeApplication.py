@@ -17,7 +17,7 @@ class processAnalyzeApplication :
         ]
         
         for processId in processIds :
-            toolhelp32SnapshotHandle.create(createSnapshotFlags, processId)
+            snapshotHandle = toolhelp32SnapshotHandle.create(createSnapshotFlags, processId)
             raise AssertionError("todo:implement")
 
 _instance = processAnalyzeApplication()
