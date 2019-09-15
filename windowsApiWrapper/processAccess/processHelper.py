@@ -25,7 +25,7 @@ class processHelper :
                 ctypes.pointer(cbNeeded)
                 )
             
-            isOK = enumProcessRes.value != 0
+            isOK = enumProcessRes != 0
             if not isOK :
                 return None #enum process procedure fail
             
