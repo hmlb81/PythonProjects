@@ -29,13 +29,20 @@ class toolhelp32CreateSnapshotFlag(enum.Enum) :
 class moduleEntry32W(ctypes.Structure) : 
     _fields_ = [
         ("_dwSize", ctypes.c_uint32),
-        ("th32ModuleID", ctypes.c_uint32),
-        ("th32ProcessID", ctypes.c_uint32),
-        ("GlblcntUsage", ctypes.c_uint32),
-        ("ProccntUsage", ctypes.c_uint32),
-        ("modBaseAddr", ctypes.c_void_p), #BYTE*
-        ("modBaseSize", ctypes.c_uint32),
-        ("hModule", ctypes.c_void_p),
-        ("szModule", ctypes.c_wchar * (toolhelpConstants.getInstance().maxModuleName32 + 1)),
-        ("szExePath", ctypes.c_wchar * (systemConstants.getInstance().maxPath)),
+        ("_th32ModuleID", ctypes.c_uint32),
+        ("_th32ProcessID", ctypes.c_uint32),
+        ("_GlblcntUsage", ctypes.c_uint32),
+        ("_ProccntUsage", ctypes.c_uint32),
+        ("_modBaseAddr", ctypes.c_void_p), #BYTE*
+        ("_modBaseSize", ctypes.c_uint32),
+        ("_hModule", ctypes.c_void_p),
+        ("_szModule", ctypes.c_wchar * (toolhelpConstants.getInstance().maxModuleName32 + 1)),
+        ("_szExePath", ctypes.c_wchar * (systemConstants.getInstance().maxPath)),
     ]
+    
+    @staticmethod
+    def createEmptyEntry() :
+        moduleEntry = moduleEntry32W()
+        moduleEntry._dwSize = ctypes.c_uint32(ctypes.sizeof(moduleEntry32W)) #set size to sizeof(MODULEENTRY32W) for input Module32First/Module32Next
+        return moduleEntry 
+        

@@ -1,7 +1,13 @@
 import ctypes
 from ..commonDefinitions import *
 from ..kernel32Dll import *
+from ..toolhelpDefinitions import *
+from ..windowsErrorCode import *
 from utilities.enumHelper import *
+
+class toolhelp32SnapshotHandleModuleEntry : 
+    def __init__(self, moduleEntryW) :
+        pass #todo:fill needed values
 
 class toolhelp32SnapshotHandle : 
     @staticmethod
@@ -22,5 +28,41 @@ class toolhelp32SnapshotHandle :
     def __del__(self) :
         kernel32Dll.getInstance().closeHandle(ctypes.c_void_p(self._handle)) #closeToolhelp32Snapshot only available in win ce
         self._handle = 0
+        
+    def walkModuleEntry(self) :
+        modules = []
+        walkNext = self._walkModuleEntryFirst(modules)
+        while (walkNext) :
+            walkNext = self._walkModuleEntryNext(modules)
+            
+        return modules
+    
+    def _walkModuleEntryFirst(self, modules) :
+        snapshot = ctypes.c_void_p(self._handle)
+        currentModule = moduleEntry32W.createEmptyEntry()
+        walkRes = kernel32Dll.getInstance().module32FirstW(snapshot, ctypes.pointer(currentModule))
+        error = kernel32Dll.getInstance().getLastError()
+        nomoreFiles = error == windowsErrorCode.ERROR_NO_MORE_FILES.value
+        isOK = walkRes == 1 #return TRUE when success
+        if isOK :
+            modules.append(toolhelp32SnapshotHandleModuleEntry(currentModule))
+        
+        walkNext = isOK and (not nomoreFiles)
+        return walkNext
+    
+    def _walkModuleEntryNext(self, modules) :
+        snapshot = ctypes.c_void_p(self._handle)
+        currentModule = moduleEntry32W.createEmptyEntry()
+        walkRes = kernel32Dll.getInstance().module32NextW(snapshot, ctypes.pointer(currentModule))
+        error = kernel32Dll.getInstance().getLastError()
+        nomoreFiles = error == windowsErrorCode.ERROR_NO_MORE_FILES.value
+        isOK = walkRes == 1 #return TRUE when success
+        if isOK :
+            modules.append(toolhelp32SnapshotHandleModuleEntry(currentModule))
+        
+        walkNext = isOK and (not nomoreFiles)
+        return walkNext
+        
+    
     
     
