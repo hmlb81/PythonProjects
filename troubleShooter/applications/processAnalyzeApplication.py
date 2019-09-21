@@ -43,15 +43,22 @@ class analyzingProcessModule :
         return self._winModuleName
     
     def scanAsciiStrings(self) :
-        scanner = asciiTextScanner()
+        scanner = self._prepareAsciiScanner()
+        
         with open(self._exePath, "rb") as moduleFile :
             self._scanAsciiStrings(scanner, moduleFile)
     
     def _scanAsciiStrings(self, scanner, moduleFile) :
         byte = moduleFile.read(1)
         while byte != b'' :
-            scanner.scan(byte, None)
+            scanner.scan(byte[0], None)
             byte = moduleFile.read(1)
+            
+    def _prepareAsciiScanner(self) :
+        scanner = asciiTextScanner()
+        
+        scanner.handlerTextFound = lambda text, userState : print(text)
+        return scanner
 
 class processAnalyzeApplication : 
     @staticmethod
