@@ -6,9 +6,18 @@ from windowsApiWrapper.processAccess.toolhelp32SnapshotHandle import *
 class analyzingProcess :
     def __init__(self, processID) :
         self._processID = processID
+        self._processName = None #init to None, and detect later
         
+    def __repr__(self) :
+        return "{0}:{1}".format(self._processID, self._processName)
+    
     def detectAndFillProcessName(self, thModule) :
-        raise AssertionError("todo:implement")
+        if (self._processName != None) : #already detected
+            return 
+        
+        moduleName = thModule.winModuleName
+        isExe = moduleName.lower().endswith(".exe")
+        self._processName = moduleName
 
 class analyzingProcessModule : 
     @staticmethod

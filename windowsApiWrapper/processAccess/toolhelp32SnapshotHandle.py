@@ -7,7 +7,14 @@ from utilities.enumHelper import *
 
 class toolhelp32SnapshotHandleModuleEntry : 
     def __init__(self, moduleEntryW) :
-        pass #todo:fill needed values
+        self._winModuleName = moduleEntryW.winModuleName
+    
+    def __repr__(self) :
+        return self._winModuleName
+    
+    @property
+    def winModuleName(self) :
+        return self._winModuleName
 
 class toolhelp32SnapshotHandle : 
     @staticmethod
@@ -45,7 +52,9 @@ class toolhelp32SnapshotHandle :
         nomoreFiles = error == windowsErrorCode.ERROR_NO_MORE_FILES.value
         isOK = walkRes == 1 #return TRUE when success
         if isOK :
-            modules.append(toolhelp32SnapshotHandleModuleEntry(currentModule))
+            #debugging codes
+            newModule = toolhelp32SnapshotHandleModuleEntry(currentModule)
+            modules.append(newModule)
         
         walkNext = isOK and (not nomoreFiles)
         return walkNext
@@ -58,7 +67,8 @@ class toolhelp32SnapshotHandle :
         nomoreFiles = error == windowsErrorCode.ERROR_NO_MORE_FILES.value
         isOK = walkRes == 1 #return TRUE when success
         if isOK :
-            modules.append(toolhelp32SnapshotHandleModuleEntry(currentModule))
+            newModule = toolhelp32SnapshotHandleModuleEntry(currentModule)
+            modules.append(newModule)
         
         walkNext = isOK and (not nomoreFiles)
         return walkNext

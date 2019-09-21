@@ -45,4 +45,10 @@ class moduleEntry32W(ctypes.Structure) :
         moduleEntry = moduleEntry32W()
         moduleEntry._dwSize = ctypes.c_uint32(ctypes.sizeof(moduleEntry32W)) #set size to sizeof(MODULEENTRY32W) for input Module32First/Module32Next
         return moduleEntry 
+    
+    @property
+    def winModuleName(self) : #do not name as moduleName(may conflict to python internal property name) 
+        return self._szModule
         
+    def __repr__(self) :
+        return self.winModuleName
