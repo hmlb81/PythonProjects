@@ -1,4 +1,5 @@
 import ctypes
+from debuggingKits.scanners.asciiTextScanner import *
 from utilities.collectionsHelper import *
 from windowsApiWrapper.kernel32Dll import *
 from windowsApiWrapper.processAccess.processHelper import *
@@ -42,14 +43,14 @@ class analyzingProcessModule :
         return self._winModuleName
     
     def scanAsciiStrings(self) :
+        scanner = asciiTextScanner()
         with open(self._exePath, "rb") as moduleFile :
-            self._scanAsciiStrings(moduleFile)
+            self._scanAsciiStrings(scanner, moduleFile)
     
-    def _scanAsciiStrings(self, moduleFile) :
+    def _scanAsciiStrings(self, scanner, moduleFile) :
         byte = moduleFile.read(1)
         while byte != b'' :
-            raise AssertionError("todo:implement")
-            
+            scanner.scan(byte, None)
             byte = moduleFile.read(1)
 
 class processAnalyzeApplication : 
