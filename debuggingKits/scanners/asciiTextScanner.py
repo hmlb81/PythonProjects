@@ -10,6 +10,7 @@ import enum
 # Ucs2TextExpectingAsciiChar (meet ascii char) -> Ucs2TextExpectingNullChar
 # Ucs2TextExpectingAsciiChar (meet '\0') -> NONE
 # Ucs2TextExpectingNullChar (meet '\0') -> Ucs2TextExpectingAsciiChar
+# Ucs2TextExpectingNullChar (meet not '\0') -> NONE
 class asciiTextScannerScanningState : 
     NONE = 0 #no ascii text found
     UncertainText = 1
@@ -40,6 +41,8 @@ class asciiTextScanner :
             self._scanWhenUncertainText(byte, userState)
         elif (self._state == asciiTextScannerScanningState.SingleAsciiText) :
             self._scanWhenSingleAsciiText(byte, userState)
+        elif (self._state == asciiTextScannerScanningState.Ucs2TextExpectingAsciiChar) :
+            self._scanWhenUcs2TextExpectingAsciiChar(byte, userState)
         else :
             raise AssertionError("Unsupported scanning state")
     
@@ -57,8 +60,13 @@ class asciiTextScanner :
             raise AssertionError("todo:implement")
     
     def _scanWhenUncertainText(self, byte, userState) :
+        isNullChar = self._isNullChar(byte)
         isAsciiChar = self._isAsciiChar(byte)
-        if isAsciiChar :
+        if isNullChar :
+            self._processingBytes.append(byte)
+            self._state = asciiTextScannerScanningState.Ucs2TextExpectingAsciiChar #treat text as usc-2 text
+            return
+        elif isAsciiChar :
             self._processingBytes.append(byte)
             self._state = asciiTextScannerScanningState.SingleAsciiText
         else :
@@ -76,6 +84,9 @@ class asciiTextScanner :
             self._raiseTextFound(True, userState)
             self._resetScanningState()
             return
+    
+    def _scanWhenUcs2TextExpectingAsciiChar(self, byte, userState) :
+        raise AssertionError("todo:implement")
     
     def _raiseTextFound(self, isSingleAsciiText, userState) :
         processingBytesLength = len(self._processingBytes)
