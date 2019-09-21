@@ -1,4 +1,5 @@
 import ctypes
+from utilities.collectionsHelper import *
 from windowsApiWrapper.kernel32Dll import *
 from windowsApiWrapper.processAccess.processHelper import *
 from windowsApiWrapper.processAccess.toolhelp32SnapshotHandle import *
@@ -22,10 +23,23 @@ class analyzingProcess :
 class analyzingProcessModule : 
     @staticmethod
     def prepareAnalyzingProcessModule(analyzingProcess, thModule, analyzingModules) :
-        raise AssertionError("todo:implement")
+        found = collectionsHelper.getInstance().firstOrDefault(analyzingModules, None, lambda m : m._exePath == thModule.exePath.lower())
+        preparingModule = found
+        if preparingModule == None :
+            newModule = analyzingProcessModule(thModule)
+            analyzingModules.append(newModule)
+            preparingModule = newModule
+            
+        preparingModule._relatingProcesses.append(analyzingProcess)
+        return preparingModule
     
-    def __init__(self) :
-        pass #todo:implement
+    def __init__(self, thModule) :
+        self._relatingProcesses = []
+        self._winModuleName = thModule.winModuleName
+        self._exePath = thModule.exePath.lower()
+        
+    def __repr__(self) :
+        return self._winModuleName
 
 class processAnalyzeApplication : 
     @staticmethod
@@ -49,8 +63,8 @@ class processAnalyzeApplication :
             for thmodule in thmodules :
                 currentAnalyzingProcess.detectAndFillProcessName(thmodule)
                 analyzingProcessModule.prepareAnalyzingProcessModule(processId, thmodule, analyzingModules)
-                raise AssertionError("todo:implement")
             
-            raise AssertionError("todo:implement")
+        #analyzing modules
+        raise AssertionError("todo:implement")
 
 _instance = processAnalyzeApplication()

@@ -49,6 +49,10 @@ class moduleEntry32W(ctypes.Structure) :
     @property
     def winModuleName(self) : #do not name as moduleName(may conflict to python internal property name) 
         return self._szModule
+    
+    @property
+    def exePath(self) :
+        return self._szExePath
         
     def __repr__(self) :
         return self.winModuleName

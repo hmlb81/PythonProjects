@@ -8,6 +8,7 @@ from utilities.enumHelper import *
 class toolhelp32SnapshotHandleModuleEntry : 
     def __init__(self, moduleEntryW) :
         self._winModuleName = moduleEntryW.winModuleName
+        self._exePath = moduleEntryW.exePath
     
     def __repr__(self) :
         return self._winModuleName
@@ -15,6 +16,11 @@ class toolhelp32SnapshotHandleModuleEntry :
     @property
     def winModuleName(self) :
         return self._winModuleName
+    
+    @property
+    def exePath(self) :
+        return self._exePath
+    
 
 class toolhelp32SnapshotHandle : 
     @staticmethod
