@@ -40,6 +40,17 @@ class analyzingProcessModule :
         
     def __repr__(self) :
         return self._winModuleName
+    
+    def scanAsciiStrings(self) :
+        with open(self._exePath, "rb") as moduleFile :
+            self._scanAsciiStrings(moduleFile)
+    
+    def _scanAsciiStrings(self, moduleFile) :
+        byte = moduleFile.read(1)
+        while byte != b'' :
+            raise AssertionError("todo:implement")
+            
+            byte = moduleFile.read(1)
 
 class processAnalyzeApplication : 
     @staticmethod
@@ -64,7 +75,12 @@ class processAnalyzeApplication :
                 currentAnalyzingProcess.detectAndFillProcessName(thmodule)
                 analyzingProcessModule.prepareAnalyzingProcessModule(processId, thmodule, analyzingModules)
             
-        #analyzing modules
+        #analyzing modules for ascii strings
+        for analyzingModule in analyzingModules :
+            analyzingModule.scanAsciiStrings()
+        
+        #mark suspect strings
+        #analyzing suspect module processes
         raise AssertionError("todo:implement")
 
 _instance = processAnalyzeApplication()
