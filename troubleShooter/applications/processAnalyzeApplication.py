@@ -3,6 +3,7 @@ from debuggingKits.scanners.asciiTextScanner import *
 from utilities.collectionsHelper import *
 from windowsApiWrapper.comAccess.comHelper import *
 from windowsApiWrapper.commonDefinitions import *
+from windowsApiWrapper.fileSystemAccess.fileSystemHelper import *
 from windowsApiWrapper.kernel32Dll import *
 from windowsApiWrapper.processAccess.processHelper import *
 from windowsApiWrapper.processAccess.toolhelp32SnapshotHandle import *
@@ -102,6 +103,20 @@ class processAnalyzeApplication :
         defragClassidValues = [comHelper.getInstance().stringToGuid(t) for t in defragClassidStrings]
         defrageClassidBuffers = [clsid.pack() for clsid in defragClassidValues]
 
-        raise AssertionError("todo:implement")
+        scanTargetFilePath = "C:\\Windows\\System32\\defrag.exe"
+        with open(scanTargetFilePath, "rb") as scannTargetFile :
+            #get file size
+            fileEnd = scannTargetFile.seek(0, 2) #seek to file end
+            fileSize = fileEnd + 1
+            
+            #read file content
+            scannTargetFile.seek(0, 0) #seek to file begin
+            fileContent = scannTargetFile.read(fileSize)
+            
+            for defragCondition in defrageClassidBuffers :
+                found = defragCondition in fileContent
+                if (found) :
+                    raise AssertionError("todo:implement")
+            raise AssertionError("todo:implement")
     
 _instance = processAnalyzeApplication()

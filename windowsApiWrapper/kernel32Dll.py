@@ -27,5 +27,8 @@ class kernel32Dll :
     
     def module32NextW(self, hsnapshot, lpme) :
         return self._dll.Module32NextW(hsnapshot, lpme)
+    
+    def wow64EnableWow64FsRedirection(self, wow64FsEnableRedirection) :
+        return self._dll.Wow64EnableWow64FsRedirection(wow64FsEnableRedirection)
 
 _instance = kernel32Dll()
