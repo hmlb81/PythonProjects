@@ -1,4 +1,5 @@
 import enum
+from utilities.collectionsHelper import *
 
 # NONE (meet ascii char) -> UncertainText
 # UncertainText (meet ascii char) -> SingleAsciiText
@@ -115,7 +116,10 @@ class asciiTextScanner :
             self._resetScanningState()
             return
         else :
-            raise AssertionError("todo:implement")
+            collectionsHelper.getInstance().checkAndPopLastElement(self._processingBytes, None) #remove last '\0' element
+            self._raiseTextFound(False, userState)
+            self._resetScanningState()
+            return
     
     def _raiseTextFound(self, isSingleAsciiText, userState) :
         processingBytesLength = len(self._processingBytes)

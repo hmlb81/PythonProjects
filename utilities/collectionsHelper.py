@@ -10,5 +10,12 @@ class collectionsHelper :
                 return item
         
         return defaultValue
+    
+    def checkAndPopLastElement(self, items, defaultValue) :
+        itemCount = len(items)
+        if (itemCount <= 0) :
+            return defaultValue
+        
+        return items.pop()
 
 _instance = collectionsHelper()
