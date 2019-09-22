@@ -128,10 +128,11 @@ class asciiTextScanner :
         endsWithNullChar = False
         if isSingleAsciiText :
             processingText = self._processingBytes.decode("ascii")
+            processingTextLength = processingBytesLength
         else :
             processingText = self._processingBytes.decode("utf_16_le")
+            processingTextLength = processingBytesLength / 2 #2 bytes for 1 char in ucs2
         
-        processingTextLength = processingBytesLength
         endsWithNullChar = processingText.endswith("\0")        
         
         #try remove noisy notifications
@@ -154,5 +155,40 @@ class asciiTextScanner :
         return byte == 0 #0 == '\0'
     
     def _isAsciiChar(self, byte) :
+        if (
+            (byte == 0) #NUL
+            or (byte == 1) #SOH
+            or (byte == 2) #STX
+            or (byte == 3) #ETX
+            or (byte == 4) #EOT
+            or (byte == 5) #ENQ
+            or (byte == 6) #ACK
+            or (byte == 7) #BEL
+            or (byte == 8) #BS
+            #byte == 9 = HT (Horizon tab)
+            #byte == 10 = LF
+            #byte == 11 VT
+            #byte == 12 FF
+            #byte == 13 CR
+            or (byte == 14) #SO
+            or (byte == 15) #SI
+            or (byte == 16) #DLE
+            or (byte == 17) #DC1
+            or (byte == 18) #DC2
+            or (byte == 19) #DC3
+            or (byte == 20) #DC4
+            or (byte == 21) #NAK
+            or (byte == 22) #SYN
+            or (byte == 23) #ETB
+            or (byte == 24) #CAN
+            or (byte == 25) #EM
+            or (byte == 26) #SUB
+            or (byte == 27) #ESC
+            or (byte == 28) #FS
+            or (byte == 29) #GS
+            or (byte == 30) #RS
+            or (byte == 31) #US
+            ) :
+            return False
         return (byte > 0) and (byte < 128) #judge character(use simplest implementation)
     
