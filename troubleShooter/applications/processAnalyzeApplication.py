@@ -99,6 +99,11 @@ class processAnalyzeApplication :
         ]
         
         defragClassidValues = [comHelper.getInstance().stringToGuid(t) for t in defragClassidStrings]
+        defrageClassidBuffers = [clsid.pack() for clsid in defragClassidValues]
+
+        #debugging codes
+        temp = comHelper.getInstance().stringFromClsid(defragClassidValues[0])
+        temp = comHelper.getInstance().stringToGuid(temp)
         raise AssertionError("todo:implement")
     
 _instance = processAnalyzeApplication()

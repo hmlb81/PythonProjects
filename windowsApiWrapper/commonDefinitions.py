@@ -1,5 +1,6 @@
 import ctypes
 import enum
+import struct
 
 class systemConstants : 
     @staticmethod
@@ -29,6 +30,16 @@ class guid(ctypes.Structure) :
         ("_data3", ctypes.c_ushort),
         ("_data4", ctypes.c_ubyte * 8)
     ]
+    
+    def pack(self) :
+        packResult = struct.pack(
+            "LHHBBBBBBBB",
+            self._data1,
+            self._data2,
+            self._data3,
+            self._data4[0], self._data4[1], self._data4[2], self._data4[3], self._data4[4], self._data4[5], self._data4[6], self._data4[7]
+            )
+        return packResult
     
 class SystemErrorCodes(enum.Enum) : 
     Success = 0 #ERROR_SUCCESS

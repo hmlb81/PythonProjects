@@ -10,5 +10,11 @@ class ole32Dll :
         
     def iidFromString(self, lpsz, lpiid) :
         return self._dll.IIDFromString(lpsz, lpiid)
+    
+    def stringFromClsid(self, rclsid, lplpsz) :
+        return self._dll.StringFromCLSID(rclsid, lplpsz)
+    
+    def coTaskMemFree(self, pv) :
+        self._dll.CoTaskMemFree(pv)
 
 _instance = ole32Dll()

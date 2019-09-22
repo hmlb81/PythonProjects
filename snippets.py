@@ -1,11 +1,12 @@
-import loggingAuxiliary.loggingConfigger
+import struct
+from loggingAuxiliary.loggingConfigger import *
 
 class Snippets : 
     def run(self) :
         self._initializeInfrustructures()
     
     def _initializeInfrustructures(self) : 
-        loggingAuxiliary.loggingConfigger.instance.configConsoleLogging()
+        loggingConfigger.getInstance().configConsoleLogging()
 
 instance = Snippets()
 instance.run()
