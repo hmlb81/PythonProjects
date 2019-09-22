@@ -14,7 +14,8 @@ class program :
     def run(self) : 
         self._initializeInfrustructures()
         
-        processAnalyzeApplication.getInstance().scanProcessStrings()
+        processAnalyzeApplication.getInstance().scanDefragComCallers()
+        #processAnalyzeApplication.getInstance().scanProcessStrings()
         #applications.networkDiagnosticsApplication.instance.collectNetworkAdaptersInformation()
     
     #initialize infrustructures

@@ -1,6 +1,7 @@
 import ctypes
 from debuggingKits.scanners.asciiTextScanner import *
 from utilities.collectionsHelper import *
+from windowsApiWrapper.comAccess.comHelper import *
 from windowsApiWrapper.kernel32Dll import *
 from windowsApiWrapper.processAccess.processHelper import *
 from windowsApiWrapper.processAccess.toolhelp32SnapshotHandle import *
@@ -91,4 +92,13 @@ class processAnalyzeApplication :
         #analyzing suspect module processes
         raise AssertionError("todo:implement")
 
+    def scanDefragComCallers(self) :
+        defragClassidStrings = [
+            "{d20a3293-3341-4ae8-9aaf-8e397cb63c34}",
+            "{d20a3293-3341-4ae8-9aaf-8e397cb63c34}",
+        ]
+        
+        defragClassidValues = [comHelper.getInstance().stringToGuid(t) for t in defragClassidStrings]
+        raise AssertionError("todo:implement")
+    
 _instance = processAnalyzeApplication()
