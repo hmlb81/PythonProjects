@@ -2,6 +2,7 @@ import ctypes
 from debuggingKits.scanners.asciiTextScanner import *
 from utilities.collectionsHelper import *
 from windowsApiWrapper.comAccess.comHelper import *
+from windowsApiWrapper.commonDefinitions import *
 from windowsApiWrapper.kernel32Dll import *
 from windowsApiWrapper.processAccess.processHelper import *
 from windowsApiWrapper.processAccess.toolhelp32SnapshotHandle import *
@@ -101,9 +102,6 @@ class processAnalyzeApplication :
         defragClassidValues = [comHelper.getInstance().stringToGuid(t) for t in defragClassidStrings]
         defrageClassidBuffers = [clsid.pack() for clsid in defragClassidValues]
 
-        #debugging codes
-        temp = comHelper.getInstance().stringFromClsid(defragClassidValues[0])
-        temp = comHelper.getInstance().stringToGuid(temp)
         raise AssertionError("todo:implement")
     
 _instance = processAnalyzeApplication()
