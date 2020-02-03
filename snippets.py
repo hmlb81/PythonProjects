@@ -1,5 +1,5 @@
 import struct
-from loggingAuxiliary.loggingConfigger import *
+from loggingAuxiliary.loggingConfigger import loggingConfigger
 
 class Snippets : 
     def run(self) :
