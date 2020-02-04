@@ -7,7 +7,9 @@ class riddlesProgram(simpleProgramBase) :
 
     def _testSubProcessHelperRun(self) :
         execution = "ping"
-        subprocessHelper.getInstance().run(execution, None, None)
+        options = None
+        options = subprocessHelper.getInstance().addOption(options, ["-n", 1])
+        subprocessHelper.getInstance().run(execution, options, None)
 
 _program = riddlesProgram()
 _program.run()
