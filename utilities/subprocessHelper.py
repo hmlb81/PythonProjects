@@ -60,6 +60,7 @@ class subprocessHelper :
         if stdoutEncoding is None :
             return None
 
-        raise AssertionError("todo:implement")
+        stdoutBytes = process.stdout.read()
+        return stdoutBytes.decode(stdoutEncoding)
 
 _instance = subprocessHelper()
