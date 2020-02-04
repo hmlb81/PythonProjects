@@ -5,7 +5,10 @@ os.sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../
 
 from programFrameworks.simpleProgramFramework import simpleProgramBase
 
-class program(simpleProgramBase) : pass
+#program entry
+class program(simpleProgramBase) : 
+    def _dorun(self) :
+        pass
 
 _program = program()
 _program.run()
