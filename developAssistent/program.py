@@ -10,7 +10,7 @@ from programFrameworks.simpleProgramFramework import simpleProgramBase
 class program(simpleProgramBase) : 
     def _dorun(self) :
         dotnetApp = dotnetCoreDevelopApplication.getInstance()
-        dotnetApp.newSolution(dotnetApp.componentLibrariesSolutionName, dotnetApp.componentLibrariesDirectory)
+        dotnetApp.newConsoleProject(dotnetApp.componentTestConoleProjectName, dotnetApp.componetTestConsoleDirectory)
 
     def _initializeInfrustrutures(self) :
         super()._initializeInfrustrutures()

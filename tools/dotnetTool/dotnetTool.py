@@ -13,6 +13,10 @@ class dotnetTool :
     def templateSln(self) :
         return "sln" #solution file
 
+    @property
+    def templateConsole(self) :
+        return "console" #Console Application
+
     def addCommandOption(self, options, command) :
         return subprocessHelper.getInstance().addOption(options, command)
 

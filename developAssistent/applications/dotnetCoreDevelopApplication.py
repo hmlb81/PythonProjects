@@ -5,6 +5,7 @@ class dotnetCoreDevelopApplication :
     def __init__(self) :
         self._csharpCodeRepositoryDirectory = None
         self._componentLibraries = "ComponentLibraries"
+        self._componentTestConsole = "TestConsole"
 
     @staticmethod
     def getInstance() :
@@ -26,6 +27,14 @@ class dotnetCoreDevelopApplication :
     def componentLibrariesSolutionName(self) :
         return self._componentLibraries
 
+    @property
+    def componetTestConsoleDirectory(self) :
+        return os.path.join(self.componentLibrariesDirectory, self._componentTestConsole)
+
+    @property
+    def componentTestConoleProjectName(self) :
+        return self._componentTestConsole
+
     def showDotnetCoreHelp(self) :
         dotnet = dotnetTool.getInstance()
         options = None
@@ -41,6 +50,15 @@ class dotnetCoreDevelopApplication :
         options = dotnet.addCommandOption(options, dotnet.commandNew)
         options = dotnet.addNewTemplateOption(options, dotnet.templateSln)
         options = dotnet.addNewNameOption(options, solutionName)
+        options = dotnet.addNewOutputOption(options, outputDirectory)
+        dotnet.run(options, None)
+
+    def newConsoleProject(self, projectName, outputDirectory) :
+        dotnet = dotnetTool.getInstance()
+        options = None
+        options = dotnet.addCommandOption(options, dotnet.commandNew)
+        options = dotnet.addNewTemplateOption(options, dotnet.templateConsole)
+        options = dotnet.addNewNameOption(options, projectName)
         options = dotnet.addNewOutputOption(options, outputDirectory)
         dotnet.run(options, None)
 
