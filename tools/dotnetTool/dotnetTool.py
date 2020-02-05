@@ -10,6 +10,10 @@ class dotnetTool :
         return "new"
 
     @property
+    def commandAdd(self) :
+        return "add"
+
+    @property
     def templateSln(self) :
         return "sln" #solution file
 
@@ -38,6 +42,18 @@ class dotnetTool :
 
     def addNewNameOption(self, options, name) :
         return subprocessHelper.getInstance().addOption(options, ["--name", name])
+
+    def addAddProjectOption(self, options, projectPath) :
+        return subprocessHelper.getInstance().addOption(options, "\"{0}\"".format(projectPath))
+        
+    def addAddReferenceOption(self, options, referenceProjectPath) :
+        return subprocessHelper.getInstance().addOption(
+            options,
+            [
+                "reference",
+                "\"{0}\"".format(referenceProjectPath)
+            ]
+        )
         
     def addHelpOption(self, options) :
         return subprocessHelper.getInstance().addOption(options, "--help")

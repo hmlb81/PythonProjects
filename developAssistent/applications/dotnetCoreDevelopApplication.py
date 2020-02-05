@@ -36,6 +36,10 @@ class dotnetCoreDevelopApplication :
     def componentTestConoleProjectName(self) :
         return self._componentTestConsole
 
+    @property
+    def componentTestConsoleProjectPath(self) :
+        return os.path.join(self.componetTestConsoleDirectory, self.componentTestConoleProjectName + ".csproj")
+
     @property 
     def serviceSupervisorDirectory(self) :
         return os.path.join(self.componentLibrariesDirectory, self._serviceSupervisior)
@@ -43,6 +47,10 @@ class dotnetCoreDevelopApplication :
     @property 
     def serviceSupervisorProjectName(self) :
         return self._serviceSupervisior
+
+    @property
+    def serviceSupervisorProjectPath(self) :
+        return os.path.join(self.serviceSupervisorDirectory, self.serviceSupervisorProjectName + ".csproj")
 
     def showDotnetCoreHelp(self) :
         dotnet = dotnetTool.getInstance()
@@ -78,6 +86,15 @@ class dotnetCoreDevelopApplication :
         options = dotnet.addNewTemplateOption(options, dotnet.templateClasslib)
         options = dotnet.addNewNameOption(options, projectName)
         options = dotnet.addNewOutputOption(options, outputDirectory)
+        dotnet.run(options, None)
+
+    #add project file reference to target project
+    def addProjectRefrence(self, targetProject, referenceProject) :
+        dotnet = dotnetTool.getInstance()
+        options = None
+        options = dotnet.addCommandOption(options, dotnet.commandAdd)
+        options = dotnet.addAddProjectOption(options, targetProject)
+        options = dotnet.addAddReferenceOption(options, referenceProject)
         dotnet.run(options, None)
 
     def _showDotnetCommandHelp(self, command) :
