@@ -6,6 +6,7 @@ class dotnetCoreDevelopApplication :
         self._csharpCodeRepositoryDirectory = None
         self._componentLibraries = "ComponentLibraries"
         self._componentTestConsole = "TestConsole"
+        self._serviceSupervisior = "ServiceSupervisor"
 
     @staticmethod
     def getInstance() :
@@ -35,6 +36,14 @@ class dotnetCoreDevelopApplication :
     def componentTestConoleProjectName(self) :
         return self._componentTestConsole
 
+    @property 
+    def serviceSupervisorDirectory(self) :
+        return os.path.join(self.componentLibrariesDirectory, self._serviceSupervisior)
+
+    @property 
+    def serviceSupervisorProjectName(self) :
+        return self._serviceSupervisior
+
     def showDotnetCoreHelp(self) :
         dotnet = dotnetTool.getInstance()
         options = None
@@ -58,6 +67,15 @@ class dotnetCoreDevelopApplication :
         options = None
         options = dotnet.addCommandOption(options, dotnet.commandNew)
         options = dotnet.addNewTemplateOption(options, dotnet.templateConsole)
+        options = dotnet.addNewNameOption(options, projectName)
+        options = dotnet.addNewOutputOption(options, outputDirectory)
+        dotnet.run(options, None)
+
+    def newClasslibProject(self, projectName, outputDirectory) :
+        dotnet = dotnetTool.getInstance()
+        options = None
+        options = dotnet.addCommandOption(options, dotnet.commandNew)
+        options = dotnet.addNewTemplateOption(options, dotnet.templateClasslib)
         options = dotnet.addNewNameOption(options, projectName)
         options = dotnet.addNewOutputOption(options, outputDirectory)
         dotnet.run(options, None)

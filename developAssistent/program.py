@@ -9,8 +9,9 @@ from programFrameworks.simpleProgramFramework import simpleProgramBase
 #program entry
 class program(simpleProgramBase) : 
     def _dorun(self) :
-        dotnetApp = dotnetCoreDevelopApplication.getInstance()
-        dotnetApp.newConsoleProject(dotnetApp.componentTestConoleProjectName, dotnetApp.componetTestConsoleDirectory)
+        pass
+        #dotnetApp = dotnetCoreDevelopApplication.getInstance()
+        #dotnetApp.newClasslibProject(dotnetApp.serviceSupervisorProjectName, dotnetApp.serviceSupervisorDirectory)
 
     def _initializeInfrustrutures(self) :
         super()._initializeInfrustrutures()

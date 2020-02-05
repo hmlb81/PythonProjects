@@ -17,6 +17,10 @@ class dotnetTool :
     def templateConsole(self) :
         return "console" #Console Application
 
+    @property
+    def templateClasslib(self) :
+        return "classlib" #class library
+
     def addCommandOption(self, options, command) :
         return subprocessHelper.getInstance().addOption(options, command)
 
