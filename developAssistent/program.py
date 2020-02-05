@@ -9,7 +9,13 @@ from programFrameworks.simpleProgramFramework import simpleProgramBase
 #program entry
 class program(simpleProgramBase) : 
     def _dorun(self) :
-        dotnetCoreDevelopApplication.getInstance().showDotnetCoreHelp()
+        dotnetApp = dotnetCoreDevelopApplication.getInstance()
+        dotnetApp.newSolution(dotnetApp.componentLibrariesSolutionName, dotnetApp.componentLibrariesDirectory)
+
+    def _initializeInfrustrutures(self) :
+        super()._initializeInfrustrutures()
+
+        dotnetCoreDevelopApplication.getInstance().csharpCodeRepositoryDirectory = "D:\\GitHub\\CsharpProjects\\"
 
 _program = program()
 _program.run()

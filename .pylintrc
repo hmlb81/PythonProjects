@@ -146,7 +146,8 @@ disable=print-statement,
         bad-whitespace,
         trailing-whitespace,
         missing-final-newline,
-        missing-function-docstring
+        missing-function-docstring,
+        line-too-long
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
