@@ -6,7 +6,7 @@ class dotnetCoreDevelopApplication :
         self._csharpCodeRepositoryDirectory = None
         self._componentLibraries = "ComponentLibraries"
         self._componentTestConsole = "TestConsole"
-        self._serviceSupervisior = "ServiceSupervisor"
+        self._serviceCenter = "ServiceCenter"
 
     @staticmethod
     def getInstance() :
@@ -41,16 +41,16 @@ class dotnetCoreDevelopApplication :
         return os.path.join(self.componetTestConsoleDirectory, self.componentTestConoleProjectName + ".csproj")
 
     @property 
-    def serviceSupervisorDirectory(self) :
-        return os.path.join(self.componentLibrariesDirectory, self._serviceSupervisior)
+    def serviceCenterDirectory(self) :
+        return os.path.join(self.componentLibrariesDirectory, self._serviceCenter)
 
     @property 
-    def serviceSupervisorProjectName(self) :
-        return self._serviceSupervisior
+    def serviceCenterProjectName(self) :
+        return self._serviceCenter
 
     @property
-    def serviceSupervisorProjectPath(self) :
-        return os.path.join(self.serviceSupervisorDirectory, self.serviceSupervisorProjectName + ".csproj")
+    def serviceCenterProjectPath(self) :
+        return os.path.join(self.serviceCenterDirectory, self.serviceCenterProjectName + ".csproj")
 
     def showDotnetCoreHelp(self) :
         dotnet = dotnetTool.getInstance()

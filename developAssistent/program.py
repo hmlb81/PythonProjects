@@ -10,7 +10,7 @@ from programFrameworks.simpleProgramFramework import simpleProgramBase
 class program(simpleProgramBase) : 
     def _dorun(self) :
         dotnetApp = dotnetCoreDevelopApplication.getInstance()
-        print(dotnetApp.serviceSupervisorProjectPath) #debugging codes
+        print(dotnetApp.serviceCenterProjectPath) #debugging codes
         #dotnetApp.addProjectRefrence(dotnetApp.componentTestConsoleProjectPath, dotnetApp.serviceSupervisorProjectPath)
  
     def _initializeInfrustrutures(self) :
