@@ -51,7 +51,16 @@ class dotnetTool :
             options,
             [
                 "reference",
-                "\"{0}\"".format(referenceProjectPath)
+                "\"{0}\"".format(referenceProjectPath),
+            ]
+        )
+
+    def addAddPackageOption(self, options, package) :
+        return subprocessHelper.getInstance().addOption(
+            options,
+            [
+                "package",
+                package,
             ]
         )
         

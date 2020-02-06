@@ -97,6 +97,14 @@ class dotnetCoreDevelopApplication :
         options = dotnet.addAddReferenceOption(options, referenceProject)
         dotnet.run(options, None)
 
+    def addPackageReference(self, targetProject, package) :
+        dotnet = dotnetTool.getInstance()
+        options = None
+        options = dotnet.addCommandOption(options, dotnet.commandAdd)
+        options = dotnet.addAddProjectOption(options, targetProject)
+        options = dotnet.addAddPackageOption(options, package)
+        dotnet.run(options, None)
+
     def _showDotnetCommandHelp(self, command) :
         dotnet = dotnetTool.getInstance()
         options = None

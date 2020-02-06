@@ -11,7 +11,7 @@ class program(simpleProgramBase) :
     def _dorun(self) :
         dotnetApp = dotnetCoreDevelopApplication.getInstance()
         print(dotnetApp.serviceCenterProjectPath) #debugging codes
-        #dotnetApp.addProjectRefrence(dotnetApp.componentTestConsoleProjectPath, dotnetApp.serviceSupervisorProjectPath)
+        #dotnetApp.addPackageReference(dotnetApp.serviceCenterProjectPath, "System")
  
     def _initializeInfrustrutures(self) :
         super()._initializeInfrustrutures()
