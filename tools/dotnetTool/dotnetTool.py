@@ -25,6 +25,10 @@ class dotnetTool :
     def templateClasslib(self) :
         return "classlib" #class library
 
+    @property
+    def templateMstest(self) :
+        return "mstest" #unit test project
+
     def addCommandOption(self, options, command) :
         return subprocessHelper.getInstance().addOption(options, command)
 

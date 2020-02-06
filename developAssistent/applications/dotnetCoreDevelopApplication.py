@@ -7,6 +7,7 @@ class dotnetCoreDevelopApplication :
         self._componentLibraries = "ComponentLibraries"
         self._componentTestConsole = "TestConsole"
         self._serviceCenter = "ServiceCenter"
+        self._serviceCenterTest = "ServiceCenterTest"
 
     @staticmethod
     def getInstance() :
@@ -52,6 +53,18 @@ class dotnetCoreDevelopApplication :
     def serviceCenterProjectPath(self) :
         return os.path.join(self.serviceCenterDirectory, self.serviceCenterProjectName + ".csproj")
 
+    @property
+    def serviceCenterTestDirectory(self) :
+        return os.path.join(self.componentLibrariesDirectory, self._serviceCenterTest)
+
+    @property
+    def serviceCenterTestProjectName(self) :
+        return self._serviceCenterTest
+
+    @property
+    def serviceCenterTestProjectPath(self) :
+        return os.path.join(self.serviceCenterTestDirectory, self.serviceCenterTestProjectName + ".csproj")
+
     def showDotnetCoreHelp(self) :
         dotnet = dotnetTool.getInstance()
         options = None
@@ -71,22 +84,13 @@ class dotnetCoreDevelopApplication :
         dotnet.run(options, None)
 
     def newConsoleProject(self, projectName, outputDirectory) :
-        dotnet = dotnetTool.getInstance()
-        options = None
-        options = dotnet.addCommandOption(options, dotnet.commandNew)
-        options = dotnet.addNewTemplateOption(options, dotnet.templateConsole)
-        options = dotnet.addNewNameOption(options, projectName)
-        options = dotnet.addNewOutputOption(options, outputDirectory)
-        dotnet.run(options, None)
+        self._newProject(dotnetTool.getInstance().templateConsole, projectName, outputDirectory)
 
     def newClasslibProject(self, projectName, outputDirectory) :
-        dotnet = dotnetTool.getInstance()
-        options = None
-        options = dotnet.addCommandOption(options, dotnet.commandNew)
-        options = dotnet.addNewTemplateOption(options, dotnet.templateClasslib)
-        options = dotnet.addNewNameOption(options, projectName)
-        options = dotnet.addNewOutputOption(options, outputDirectory)
-        dotnet.run(options, None)
+        self._newProject(dotnetTool.getInstance().templateClasslib, projectName, outputDirectory)
+
+    def newUnitTestProject(self, projectName, outputDirectory) :
+        self._newProject(dotnetTool.getInstance().templateMstest, projectName, outputDirectory)
 
     #add project file reference to target project
     def addProjectRefrence(self, targetProject, referenceProject) :
@@ -110,6 +114,15 @@ class dotnetCoreDevelopApplication :
         options = None
         options = dotnet.addCommandOption(options, command)
         options = dotnet.addHelpOption(options)
+        dotnet.run(options, None)
+
+    def _newProject(self, template, projectName, outputDirectory) :
+        dotnet = dotnetTool.getInstance()
+        options = None
+        options = dotnet.addCommandOption(options, dotnet.commandNew)
+        options = dotnet.addNewTemplateOption(options, template)
+        options = dotnet.addNewNameOption(options, projectName)
+        options = dotnet.addNewOutputOption(options, outputDirectory)
         dotnet.run(options, None)
 
 
