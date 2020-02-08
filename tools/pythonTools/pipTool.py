@@ -18,6 +18,16 @@ class pipTool :
     def commandInstall(self) :
         return "install" #install packages
 
+    @property
+    def commandHelp(self) :
+        return "help"
+
+    def addCommandOption(self, options, command) :
+        return subprocessHelper.getInstance().addOption(options, command)
+
+    def addInstallPackageOption(self, options, package) :
+        return subprocessHelper.getInstance().addOption(options, package)
+
     def run(self, options, stdoutEncoding) :
         exepath = self.executionPath
         return subprocessHelper.getInstance().run(exepath, options, stdoutEncoding)
