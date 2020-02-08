@@ -11,6 +11,7 @@ class program(simpleProgramBase) :
     def _dorun(self) :
         dotnetApp = dotnetCoreDevelopApplication.getInstance()
         print(dotnetApp.serviceCenterTestProjectPath) #debugging codes
+
         #dotnetApp.newUnitTestProject(dotnetApp.serviceCenterTestProjectName, dotnetApp.serviceCenterTestDirectory)
  
     def _initializeInfrustrutures(self) :

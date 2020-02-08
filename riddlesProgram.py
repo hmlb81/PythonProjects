@@ -1,18 +1,14 @@
 from programFrameworks.simpleProgramFramework import simpleProgramBase
-from utilities.subprocessHelper import subprocessHelper
-from utilities.wellknownPythonEncodings import wellknownPythonEncodings
+from tools.pythonTools.pipTool import pipTool
 
 class riddlesProgram(simpleProgramBase) :
     def _dorun(self) : 
-        self._testSubProcessHelperRun()
+        self._testPipTool()
 
-    def _testSubProcessHelperRun(self) :
-        execution = "ping"
-        encoding = wellknownPythonEncodings.getInstance().mbcs
+    def _testPipTool(self) :
+        pip = pipTool.getInstance()
         options = None
-        options = subprocessHelper.getInstance().addOption(options, ["-n", 1])
-        output = subprocessHelper.getInstance().run(execution, options, encoding)
-        print(output) #debugging code for eliminating pylint warnings
-
+        pip.run(options, None)
+        
 _program = riddlesProgram()
 _program.run()
