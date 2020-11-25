@@ -59,12 +59,12 @@ class simpleLinearCalculator :
             guessCounter = guessCounter + 1
 
             #check
-            checkValue = status.getLastGuessValue() #验算结果
+            checkValue = status.checkGuessValue(x) #验算结果
             deviation = self._calculateDeviation(y, checkValue)
 
             # if exceeds max guess count, exit loop
             exceedGuessCount = exceedGuessCount or (guessCounter > maxGuessCount)
-            if (exceedGuessCount) :
+            if exceedGuessCount :
                 isFinished = True
             
         return status
