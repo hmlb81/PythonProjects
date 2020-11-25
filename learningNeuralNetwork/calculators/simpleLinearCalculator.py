@@ -14,14 +14,14 @@ class simpleLinearCalculateStatus :
 
     def getLastGuessValue(self) :
         length = len(self._ccollection)
-        if (length <= 0) :
+        if length <= 0 :
             return None
 
         return self._ccollection[length - 1]
 
     def checkGuessValue(self, x) :
         guessValue = self.getLastGuessValue()
-        if guessValue == None :
+        if guessValue is None :
             return None
         
         return x * guessValue
@@ -60,6 +60,7 @@ class simpleLinearCalculator :
 
             #check
             checkValue = status.getLastGuessValue() #验算结果
+            deviation = self._calculateDeviation(y, checkValue)
 
             # if exceeds max guess count, exit loop
             exceedGuessCount = exceedGuessCount or (guessCounter > maxGuessCount)
@@ -74,7 +75,12 @@ class simpleLinearCalculator :
         initialc = random.random() #intial c in [0, 1]
         status.guess(initialc)
 
-    
+    def _calculateDeviation(self, realValue, checkValue) :
+        #deviation = realValue - checkValue, hence checkValue + deviation = realValue
+        if checkValue is None :
+            return None
+
+        return realValue - checkValue
 
 _instance = simpleLinearCalculator()
     
