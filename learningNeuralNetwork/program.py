@@ -1,7 +1,9 @@
 import os
 
 #append top level module directory
-os.sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../"))
+_s_file_abs_path = os.path.abspath(__file__)
+_s_file_dir = os.path.dirname(_s_file_abs_path)
+os.sys.path.append(os.path.join(_s_file_dir, "../"))
 
 from applications.exampleApplication import exampleApplication
 from programFrameworks.simpleProgramFramework import simpleProgramBase
