@@ -114,7 +114,7 @@ class simpleLinearCalculator :
                 break #找到答案，提前返回
 
             #未找到答案，按step更新guess
-            self._nextGuess(status, x, y)
+            self._nextGuess(status, x, y, precision)
             
         return status
 
@@ -140,7 +140,7 @@ class simpleLinearCalculator :
         d = y - v
         return d
 
-    def _nextGuess(self, status, x, y) :
+    def _nextGuess(self, status, x, y, precision) :
         deviationOld = status.bestGuess.deviation
 
         if deviationOld == 0.0 :
@@ -154,13 +154,18 @@ class simpleLinearCalculator :
 
         deviationNew = status.bestGuess.deviation
         
+        #调整步长，需要以合适的步长，缩短迭代时长
+        changePercent = abs(d) / abs(deviationOld) #注意，此处不能使用deviationNew/deviationOld
         absStep = abs(status.step)
         if abs(deviationNew) >= abs(deviationOld) :#偏差未缩小（本次偏差反而放大），过犹不及，缩小step
-            absStep = absStep - absStep * 1.0 / 100.0 #以1%速率下调
+            absStep = absStep - absStep * changePercent
         else : #偏差缩小中，不调整step（甚至应该部分放大step，提升收敛的速度）
-            absStep = absStep + absStep * 1.0 / 100.0 #以1%速率上调
+            absStep = absStep + absStep * changePercent 
 
-        if (deviationNew > 0) :
+        if (absStep <= 0.0) :
+            absStep = precision #避免step变为0
+
+        if (d > 0) : #注意，此处使用d，不是deviationNew
             status.step = absStep * 1.0
         else :
             status.step = absStep * -1.0
