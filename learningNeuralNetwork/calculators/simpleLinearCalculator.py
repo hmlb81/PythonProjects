@@ -155,12 +155,12 @@ class simpleLinearCalculator :
         deviationNew = status.bestGuess.deviation
         
         #调整步长，需要以合适的步长，缩短迭代时长
-        changePercent = abs(d) / abs(deviationOld) #注意，此处不能使用deviationNew/deviationOld
+        changeFactor = abs(d - deviationOld) / abs(deviationOld) #注意，此处不能使用deviationNew/deviationOld
         absStep = abs(status.step)
         if abs(deviationNew) >= abs(deviationOld) :#偏差未缩小（本次偏差反而放大），过犹不及，缩小step
-            absStep = absStep - absStep * changePercent
+            absStep = absStep - absStep * 1.0 / 100.0 #以1%速度微调减小
         else : #偏差缩小中，不调整step（甚至应该部分放大step，提升收敛的速度）
-            absStep = absStep + absStep * changePercent 
+            absStep = absStep + absStep * changeFactor 
 
         if (absStep <= 0.0) :
             absStep = precision #避免step变为0
