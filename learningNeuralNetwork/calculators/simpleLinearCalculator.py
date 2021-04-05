@@ -71,6 +71,11 @@ class simpleLinearCalculateStatus :
     def step(self, value) :
         self._step = value
 
+    @property
+    def bestGuess(self) :
+        return self._bestGuess
+
+
 class simpleLinearCalculator :
     def __init__(self) :
         self._tracing = False
@@ -90,9 +95,8 @@ class simpleLinearCalculator :
     def calculate(self, x, y, precision) :
         status = simpleLinearCalculateStatus()
 		
-        self._initStatus(status)
+        self._initStatus(status, x, y)
         
-        #self._determineInitialC(status) #determine initial c
         
         #maxGuessCount = 1000000 #max guess count
         #guessCounter = 0
@@ -117,27 +121,27 @@ class simpleLinearCalculator :
         number = random.random()
         return number
 
-    def _initStatus(self, status) :
-        status.c = self._generateRandomNumber()
+    def _initStatus(self, status, x, y) :
+        c = self._generateRandomNumber()
+        d = self._calcDeviation(c, x, y)
+        g = simpleLinearGuess(c, d)
+        status.guess(g)
+        
         status.step = self._generateRandomNumber()
-        self._trace("init c:{0}, step:{1}".format(status.c, status.step))
+
+        print("g:{0}, step:{1}".format(status.bestGuess, status.step))
+
+    def _calcDeviation(self, c, x, y) :
+        v = c * x
+		
+        #v + deviation = y; deviation = y - v
+        d = y - v
+        return d
 
     def _trace(self, message) :
         if self._tracing :
             print(message)
 
-    def _determineInitialC(self, status) :
-        random.seed()
-
-        initialc = random.random() #intial c in [0, 1]
-        status.guess(initialc)
-
-    def _calculateDeviation(self, realValue, checkValue) :
-        #deviation = realValue - checkValue, hence checkValue + deviation = realValue
-        if checkValue is None :
-            return None
-
-        return realValue - checkValue
-
+    
 _instance = simpleLinearCalculator()
     
