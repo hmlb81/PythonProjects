@@ -3,10 +3,6 @@ import random
 #simple linear relation : y = c * x, given x, y, get c
 
 class simpleLinearGuess :
-    def __init__(self) :
-        self._c = None #猜测的系数值 
-        self._deviation = None #猜测结果，与实际结果之间的偏差
-
     def __init__(self, c, deviation) :
         self._c = c
         self._deviation = deviation
@@ -41,10 +37,10 @@ class simpleLinearGuess :
             return b
         elif b is None :
             return a
-        elif abs(a._deviation) <= abs(b._deviation) :
+        elif abs(a.deviation) <= abs(b.deviation) :
             return a
         else :
-        	return b
+            return b
 
 class simpleLinearCalculateStatus :
     def __init__(self) :
@@ -75,6 +71,16 @@ class simpleLinearCalculateStatus :
     def bestGuess(self) :
         return self._bestGuess
 
+    def checkAndUseGuess(self, precision) :
+        if self._bestGuess is None :
+            return
+
+        if abs(self._bestGuess.deviation) > precision :
+            return
+
+        self._c = self._bestGuess.c
+        return
+
 
 class simpleLinearCalculator :
     def __init__(self) :
@@ -97,22 +103,18 @@ class simpleLinearCalculator :
 		
         self._initStatus(status, x, y)
         
-        
-        #maxGuessCount = 1000000 #max guess count
-        #guessCounter = 0
-        #exceedGuessCount = False
-        #isFinished = False
-        #while not isFinished :
-            #guessCounter = guessCounter + 1
+        #for until find best guess
+        exiting = False
+        while not exiting :
+            status.checkAndUseGuess(precision)
+            hasMatchedGuess = not status.c is None #python 不支持is not写法
+            exiting = exiting or hasMatchedGuess
+            self._traceif(hasMatchedGuess, "find matched guess {0}".format(status.bestGuess))
+            if exiting :
+                break #找到答案，提前返回
 
-            ##check
-            #checkValue = status.checkGuessValue(x) #验算结果
-            #deviation = self._calculateDeviation(y, checkValue)
-
-            # if exceeds max guess count, exit loop
-            #exceedGuessCount = exceedGuessCount or (guessCounter > maxGuessCount)
-            #if exceedGuessCount :
-                #isFinished = True
+            #未找到答案，按step更新guess
+            self._nextGuess(status, x, y)
             
         return status
 
@@ -138,9 +140,34 @@ class simpleLinearCalculator :
         d = y - v
         return d
 
+    def _nextGuess(self, status, x, y) :
+        deviationOld = status.bestGuess.deviation
+
+        if deviationOld == 0.0 :
+            self._trace("之前的guess已足够小，不需要再次guess，这是一条异常路径")
+            return
+
+        c = status.bestGuess.c + status.step
+        d = self._calcDeviation(c, x, y)
+        g = simpleLinearGuess(c, d)
+        status.guess(g)
+
+        deviationNew = status.bestGuess.deviation
+
+        if abs(deviationNew) >= abs(deviationOld) :#偏差未缩小（本次偏差反而放大），过犹不及，缩小step
+            status.step = status.step - self._generateRandomNumber()
+        else : #偏差缩小中，不调整step（甚至应该部分放大step，提升收敛的速度）
+            status.step = status.step + self._generateRandomNumber()
+
+        self._trace("Guess {0} to {1}".format(g, status.bestGuess))
+
     def _trace(self, message) :
         if self._tracing :
             print(message)
+
+    def _traceif(self, condition, message) :
+        if condition :
+            self._trace(message)
 
     
 _instance = simpleLinearCalculator()
