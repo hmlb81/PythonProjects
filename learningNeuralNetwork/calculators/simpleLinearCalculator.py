@@ -153,13 +153,19 @@ class simpleLinearCalculator :
         status.guess(g)
 
         deviationNew = status.bestGuess.deviation
-
+        
+        absStep = abs(status.step)
         if abs(deviationNew) >= abs(deviationOld) :#偏差未缩小（本次偏差反而放大），过犹不及，缩小step
-            status.step = status.step - self._generateRandomNumber()
+            absStep = absStep - absStep * 1.0 / 100.0 #以1%速率下调
         else : #偏差缩小中，不调整step（甚至应该部分放大step，提升收敛的速度）
-            status.step = status.step + self._generateRandomNumber()
+            absStep = absStep + absStep * 1.0 / 100.0 #以1%速率上调
 
-        self._trace("Guess {0} to {1}".format(g, status.bestGuess))
+        if (deviationNew > 0) :
+            status.step = absStep * 1.0
+        else :
+            status.step = absStep * -1.0
+
+        self._trace("Guess {0} to {1} stepping {2}".format(g, status.bestGuess, status.step))
 
     def _trace(self, message) :
         if self._tracing :
