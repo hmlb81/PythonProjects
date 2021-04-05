@@ -9,6 +9,7 @@ from programFrameworks.simpleProgramFramework import simpleProgramBase
 class program(simpleProgramBase) :
     def _dorun(self) :
         app = exampleApplication.getInstance()
+        #app.test()
         app.calcKilometerMileRelation()
 
 _instance = program()
